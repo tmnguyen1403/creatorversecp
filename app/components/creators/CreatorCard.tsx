@@ -13,7 +13,7 @@ export default function CreatorCard({ creator }: CreatorCardProps) {
         {/* Image */}
         <div className="aspect-square overflow-hidden bg-gray-100">
           <img
-            src={creator.imageUrl}
+            src={creator.imageURL}
             alt={creator.name}
             className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
           />
@@ -26,12 +26,12 @@ export default function CreatorCard({ creator }: CreatorCardProps) {
           </h3>
 
           <p className="text-sm text-gray-500">
-            @{creator.username}
+            @{creator.name}
           </p>
 
-          {creator.bio && (
+          {creator.description && (
             <p className="text-sm text-gray-600 mt-2 line-clamp-2">
-              {creator.bio}
+              {creator.description}
             </p>
           )}
         </div>

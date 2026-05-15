@@ -1,7 +1,7 @@
 export type Creator = {
-  id: string;
+  id?: Int8Array;
   name: string;
-  username: string;
-  imageUrl: string;
-  bio?: string;
+  url: string;
+  description: string;
+  imageURL: string;
 };
