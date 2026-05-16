@@ -1,19 +1,16 @@
-import { useLoaderData } from "react-router";
+import { useLoaderData, Link, Form } from "react-router";
 import type { Creator } from "../models/Creator";
 import type { Route } from "./+types/create-creator";
 import { getCreator } from "~/api/get-creator";
 
 // 1. The Loader handles the backend/server-side data fetching
 export async function loader({ params }: Route.LoaderArgs) {
-    
-    const creatorIdString = params.id; // This comes from the URL :id
-    console.log ("creatorIdString", creatorIdString);
-
+  const creatorIdString = params.id;
   if (!creatorIdString) {
     throw new Response("Not Found", { status: 404 });
   }
-  const creator: Creator = await getCreator(creatorIdString);
 
+  const creator: Creator = await getCreator(creatorIdString);
   if (!creator) {
     throw new Response("Creator Not Found", { status: 404 });
   }
@@ -21,37 +18,122 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { creator };
 }
 
-// 2. The Component handles the frontend UI layout
+// 2. The Component handles the frontend UI layout styled with Pico CSS
 export default function CreatorDetail() {
   const data = useLoaderData<typeof loader>();
   const creator = data.creator;
-  console.log ("creator data: ", creator);
+
+  // Safe fallback if your Int8Array ID string mapping requires extraction
+  const creatorId = creator.id ? String(creator.id) : "";
+
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-md">
-      <div className="flex flex-col items-center">
+    <main className="container">
+      <article
+        style={{ maxWidth: "600px", margin: "0 auto", textAlign: "center" }}
+      >
+        {/* Profile Image Grouping */}
         {creator.imageURL && (
-          <img
-            src={creator.imageURL}
-            alt={creator.name}
-            className="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
-          />
+          <header
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              paddingBottom: "0",
+            }}
+          >
+            <img
+              src={creator.imageURL}
+              alt={creator.name}
+              style={{
+                borderRadius: "50%",
+                width: "150px",
+                height: "150px",
+                objectFit: "cover",
+              }}
+            />
+          </header>
         )}
-        <h1 className="text-3xl font-bold mt-4 text-gray-900">
-          {creator.name}
-        </h1>
-        <p className="text-gray-600 mt-2 text-center">{creator.description}</p>
+
+        {/* Content Section */}
+        <h1>{creator.name}</h1>
+        <p>{creator.description}</p>
 
         {creator.url && (
-          <a
-            href={creator.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition"
-          >
-            Visit Website
-          </a>
+          <p>
+            <a
+              href={creator.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              role="button"
+            >
+              Visit Website
+            </a>
+          </p>
         )}
-      </div>
-    </div>
+
+        {/* Footer Actions Panel */}
+        <footer>
+          <div
+            className="grid"
+            style={{
+              gridTemplateColumns: "1fr 1fr",
+              alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+            {/* 1. Edit Button (Sleek Slate Blue) */}
+            <Link
+              to={`/creators/${creatorId}/edit`}
+              state={{ creator }}
+              role="button"
+              style={{
+                width: "100%",
+                marginBottom: "0",
+                // Override Pico's theme variables for this element
+                "--pico-background-color": "#4f46e5",
+                "--pico-border-color": "#4f46e5",
+                "--pico-color": "#ffffff",
+              }}
+            >
+              ✏️ Edit Creator
+            </Link>
+
+            {/* 2. Delete Form Container */}
+            <Form
+              method="post"
+              action={`/creators/${creatorId}/delete`}
+              style={{ marginBottom: "0" }}
+              onSubmit={(e) => {
+                if (!confirm("Are you sure you want to delete this creator?")) {
+                  e.preventDefault();
+                }
+              }}
+            >
+              {/* Delete Button (Muted Crimson Outline) */}
+              <button
+                type="submit"
+                className="outline"
+                style={{
+                  width: "100%",
+                  marginBottom: "0",
+                  // Override variables for a clean crimson outline theme
+                  "--pico-color": "#dc2626",
+                  "--pico-border-color": "#dc2626",
+                  "--pico-background-color": "transparent",
+                }}
+                // Add subtle hover logic using a direct standard fallback if needed
+                onMouseOver={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#fef2f2")
+                }
+                onMouseOut={(e) =>
+                  (e.currentTarget.style.backgroundColor = "transparent")
+                }
+              >
+                🗑️ Delete Creator
+              </button>
+            </Form>
+          </div>
+        </footer>
+      </article>
+    </main>
   );
 }
