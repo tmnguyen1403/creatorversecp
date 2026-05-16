@@ -2,12 +2,12 @@ import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
 import CreatorCard from "../components/creators/CreatorCard";
 import CreatorGrid  from "../components/creators/CreatorGrid";
-import type { Creator }  from "../components/creators/CreatorType";
+import type { Creator }  from "../models/Creator";
 import AddCard from "../components/creators/AddCar";
+import CreateCreatorPage from "../routes/create-creator";
+import { Link } from "react-router-dom";
 
 export function Welcome() {
-
-
   const firstCreator : Creator = {
                 id: new Int8Array(1),
                 name: "Homo Enji",
@@ -33,6 +33,7 @@ export function Welcome() {
           </nav>
           <CreatorGrid creators={creators} />
           <AddCard data={firstCreator}/>
+          <Link to={"/creators/new"}>Add Creator</Link>
         </div>
       </div>
     </main>

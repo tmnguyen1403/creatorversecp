@@ -1,15 +1,6 @@
-import { supabase } from "../../database/client";
-import type { Creator } from "./CreatorType";
-const createCar = async (creator: Creator) => {
-  const { error } = await supabase.from("creators").insert({
-    ...creator,
-  });
-  if (error) {
-    console.error(error);
-  } else {
-    console.log("Success submit to supabase");
-  }
-};
+import type { Creator } from "../../models/Creator";
+import { createCar } from "../../api/create-creator";
+
 
 type CreateCarButtonProps = {
     data: Creator

@@ -1,5 +1,5 @@
 import CreatorCard from "./CreatorCard";
-import type { Creator } from "./CreatorType";
+import type { Creator } from "../../models/Creator";
 
 type CreatorListProps = {
   creators: Creator[];
@@ -17,7 +17,7 @@ export default function CreatorList({ creators }: CreatorListProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {creators.map((creator) => (
-        <CreatorCard key={creator.id} creator={creator} />
+        <CreatorCard key={String(creator.id)} creator={creator} />
       ))}
     </div>
   );

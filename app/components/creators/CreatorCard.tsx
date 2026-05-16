@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import type { Creator } from "./CreatorType";
+import type { Creator } from "../../models/Creator";
 
 type CreatorCardProps = {
   creator: Creator;
