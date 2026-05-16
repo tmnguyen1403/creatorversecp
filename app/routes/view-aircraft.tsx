@@ -1,12 +1,11 @@
 import { useLoaderData, useActionData, Link, Form } from "react-router";
-import type { Route } from "./+types/create-details";
+import type { Route } from "./+types/create-aircraft";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
-import type { Creator } from "../models/Creator";
-import { getById as getCreator } from "~/api/creator";
+import type { AirCraft } from "../models/AirCraft";
+import { getById as getAirCraft, deleteAircraft } from "../api/aircraft";
 import { redirect, type ActionFunctionArgs } from "react-router";
-import { deleteCreator } from "~/api/creator";
 
 // 1. The Loader handles the backend/server-side data fetching
 export async function loader({ params }: Route.LoaderArgs) {
@@ -15,12 +14,12 @@ export async function loader({ params }: Route.LoaderArgs) {
     throw new Response("Not Found", { status: 404 });
   }
 
-  const creator: Creator = await getCreator(creatorIdString);
-  if (!creator) {
-    throw new Response("Creator Not Found", { status: 404 });
+  const aircraft: AirCraft = await getAirCraft(creatorIdString);
+  if (!aircraft) {
+    throw new Response("AirCraft Not Found", { status: 404 });
   }
 
-  return { creator };
+  return { aircraft };
 }
 
 
@@ -28,16 +27,16 @@ export async function action({ params }: ActionFunctionArgs) {
   const { id } = params;
 
   if (!id) {
-    throw new Response("Missing Creator Identifier ID", { status: 400 });
+    throw new Response("Missing AirCraft Identifier ID", { status: 400 });
   }
 
   // Execute the delete operation directly inside your Supabase client schema configuration
-  console.log("Removing creator: ", id);
-  //const { success, error } = await deleteCreator(Number(id));
+  console.log("Removing aircraft: ", id);
+  //const { success, error } = await deleteAirCraft(Number(id));
   const error = "";
   if (error) {
     console.log("Failed to remove");
-    return { ok: false, error: "Failed to remove creator from database" };
+    return { ok: false, error: "Failed to remove aircraft from database" };
   }
   console.log("Success to remove");
   // Redirect the user back to the homepage list on clean completion
@@ -46,18 +45,18 @@ export async function action({ params }: ActionFunctionArgs) {
 
 
 // 2. The Component handles the frontend UI layout styled with Pico CSS
-export default function CreatorDetail() {
+export default function AirCraftDetail() {
   const data = useLoaderData<typeof loader>();
-  const creator = data.creator;
+  const aircraft = data.aircraft;
 
   // Safe fallback if your Int8Array ID string mapping requires extraction
-  const creatorId = creator.id ? String(creator.id) : "";
+  const creatorId = aircraft.id ? String(aircraft.id) : "";
 
   const actionData = useActionData<typeof action>();
 
   useEffect(() => {
     if (actionData?.error) {
-      toast.error("Failed to delete creator");
+      toast.error("Failed to delete aircraft");
     }
   }, [actionData]);
 
@@ -67,7 +66,7 @@ export default function CreatorDetail() {
         style={{ maxWidth: "600px", margin: "0 auto", textAlign: "center" }}
       >
         {/* Profile Image Grouping */}
-        {creator.imageURL && (
+        {aircraft.imageURL && (
           <header
             style={{
               display: "flex",
@@ -76,8 +75,8 @@ export default function CreatorDetail() {
             }}
           >
             <img
-              src={creator.imageURL}
-              alt={creator.name}
+              src={aircraft.imageURL}
+              alt={aircraft.name}
               style={{
                 borderRadius: "50%",
                 width: "150px",
@@ -89,13 +88,13 @@ export default function CreatorDetail() {
         )}
 
         {/* Content Section */}
-        <h1>{creator.name}</h1>
-        <p>{creator.description}</p>
+        <h1>{aircraft.name}</h1>
+        <p>{aircraft.description}</p>
 
-        {creator.url && (
+        {aircraft.url && (
           <p>
             <a
-              href={creator.url}
+              href={aircraft.url}
               target="_blank"
               rel="noopener noreferrer"
               role="button"
@@ -117,8 +116,8 @@ export default function CreatorDetail() {
           >
             {/* 1. Edit Button (Sleek Slate Blue) */}
             <Link
-              to={`/creators/${creatorId}/edit`}
-              state={{ creator }}
+              to={`/aircrafts/${creatorId}/edit`}
+              state={{ aircraft }}
               role="button"
               style={{
                 width: "100%",
@@ -129,7 +128,7 @@ export default function CreatorDetail() {
                 "--pico-color": "#ffffff",
               }}
             >
-              ✏️ Edit Creator
+              ✏️ Edit AirCraft
             </Link>
 
             {/* 2. Delete Form Container */}
@@ -137,7 +136,7 @@ export default function CreatorDetail() {
               method="post"
               style={{ marginBottom: "0" }}
               onSubmit={(e) => {
-                if (!confirm("Are you sure you want to delete this creator?")) {
+                if (!confirm("Are you sure you want to delete this aircraft?")) {
                   e.preventDefault();
                 }
               }}
@@ -162,7 +161,7 @@ export default function CreatorDetail() {
                   (e.currentTarget.style.backgroundColor = "transparent")
                 }
               >
-                🗑️ Delete Creator
+                🗑️ Delete AirCraft
               </button>
             </Form>
           </div>

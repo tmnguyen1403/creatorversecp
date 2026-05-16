@@ -1,4 +1,4 @@
-export type Creator = {
+export type AirCraft = {
   id?: number;
   name: string;
   url: string;

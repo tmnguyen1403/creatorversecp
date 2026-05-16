@@ -1,17 +1,17 @@
 import { Form, Link } from "react-router"; 
-import type { Creator } from "../../models/Creator"; 
+import type { AirCraft } from "../../models/AirCraft"; 
 
-type CreatorEditFormProps = { creator: Creator }; 
+type AirCraftEditFormProps = { aircraft: AirCraft }; 
 
-export default function CreatorEditForm({ creator }: CreatorEditFormProps) { 
+export default function AirCraftEditForm({ aircraft }: AirCraftEditFormProps) { 
   // Safe fallback if your ID mapping requires string extraction
-  const creatorId = creator.id ? String(creator.id) : "";
+  const creatorId = aircraft.id ? String(aircraft.id) : "";
 
   return ( 
     <main className="container" style={{ maxWidth: "600px", margin: "0 auto" }}> 
       <article> 
         <header style={{ textAlign: "center" }}> 
-          <h1 style={{ marginBottom: "0" }}>Update Creator</h1> 
+          <h1 style={{ marginBottom: "0" }}>Update AirCraft</h1> 
         </header> 
 
         <Form method="post"> 
@@ -23,22 +23,22 @@ export default function CreatorEditForm({ creator }: CreatorEditFormProps) {
               id="name" 
               name="name" 
               type="text" 
-              placeholder="Creator name" 
-              defaultValue={creator.name} 
+              placeholder="AirCraft name" 
+              defaultValue={aircraft.name} 
               style={{ fontWeight: "normal" }} 
               required 
             /> 
           </label> 
 
-          {/* 2. Creator URL Input */}
+          {/* 2. AirCraft URL Input */}
           <label htmlFor="url" style={{ fontWeight: "bold" }}> 
-            Creator URL 
+            AirCraft URL 
             <input 
               id="url" 
               name="url" 
               type="url" 
               placeholder="https://youtube.com..." 
-              defaultValue={creator.url} 
+              defaultValue={aircraft.url} 
               style={{ fontWeight: "normal" }}
               required 
             /> 
@@ -52,7 +52,7 @@ export default function CreatorEditForm({ creator }: CreatorEditFormProps) {
               name="imageURL" 
               type="url" 
               placeholder="https://..." 
-              defaultValue={creator.imageURL} 
+              defaultValue={aircraft.imageURL} 
               style={{ fontWeight: "normal" }}
             /> 
           </label> 
@@ -63,8 +63,8 @@ export default function CreatorEditForm({ creator }: CreatorEditFormProps) {
             <textarea 
               id="description" 
               name="description" 
-              placeholder="Tell us about this creator..." 
-              defaultValue={creator.description} 
+              placeholder="Tell us about this aircraft..." 
+              defaultValue={aircraft.description} 
               rows={4} 
               style={{ fontWeight: "normal" }}
               required 
@@ -76,7 +76,7 @@ export default function CreatorEditForm({ creator }: CreatorEditFormProps) {
             
             {/* Cancel Button (Muted Crimson Outline) */}
             <Link 
-              to={`/creators/${creatorId}`} 
+              to={`/aircrafts/${creatorId}`} 
               role="button" 
               className="outline"
               style={{ 

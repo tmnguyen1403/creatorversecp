@@ -1,26 +1,26 @@
 import { useActionData } from "react-router";
-import type { Route } from "./+types/create-creator";
+import type { Route } from "./+types/create-aircraft";
 import { useEffect} from 'react';
 import toast from "react-hot-toast";
 
-import CreatorForm from "../components/creators/CreatorForm";
-import { create as createCreator } from "../api/creator";
-import type { Creator } from "../models/Creator";
+import AirCraftForm from "../components/aircrafts/AirCraftForm";
+import { create as createAirCraft } from "../api/aircraft";
+import type { AirCraft } from "../models/AirCraft";
 
 export async function action({
   request,
 }: Route.ActionArgs) {
   const formData = await request.formData();
 
-  const data: Creator = {
+  const data: AirCraft = {
     name: String(formData.get("name") || ""),
     url: String(formData.get("url") || ""),
     description: String(formData.get("description") || ""),
     imageURL: String(formData.get("imageURL") || ""),
   };
 
-  console.log("Creator:", data);
-  const result = await createCreator(data)
+  console.log("AirCraft:", data);
+  const result = await createAirCraft(data)
   if (!result.success) {
     return { ok: false, error: result.error };
   }
@@ -28,20 +28,20 @@ export async function action({
   return { ok: true };
 }
 
-export default function CreateCreatorPage() {
+export default function CreateAirCraftPage() {
   const actionData = useActionData<typeof action>();
 
   useEffect(() => {
     if (actionData?.ok) {
-      toast.success("Creator added successfully!");
+      toast.success("AirCraft added successfully!");
     } else if (actionData?.error) {
-      toast.error("Failed to add creator");
+      toast.error("Failed to add aircraft");
     }
   }, [actionData]);
 
   return (
   <>
-    <CreatorForm />;
+    <AirCraftForm />;
   </>
   );
 }

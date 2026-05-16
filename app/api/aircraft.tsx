@@ -1,36 +1,37 @@
 import { supabase } from "./client";
-import type { Creator } from "../models/Creator";
+import type { AirCraft } from "../models/AirCraft";
 
-const CREATOR_TABLE = "creators";
+const AIRCRAFT_TABLE = "aircrafts";
 
 export const getById = async (id: number) => {
   const { data, error } = await supabase
-    .from(CREATOR_TABLE)
+    .from(AIRCRAFT_TABLE)
     .select("*")
     .eq("id", id)
     .single();
   if (error || !data) {
-    throw new Response("Creator Not Found", { status: 404 });
+    throw new Response("AirCraft Not Found", { status: 404 });
   }
-  console.log("found creator: ", data);
-  return data as Creator;
+  console.log("found aircraft: ", data);
+  return data as AirCraft;
 };
 
 export const getAll = async () => {
+  console.log("get all aircrafts");
   const { data, error } = await supabase
-    .from(CREATOR_TABLE)
+    .from(AIRCRAFT_TABLE)
     .select("*");
   if (error || !data) {
-    throw new Response("Creator Not Found", { status: 404 });
+    throw new Response("AirCraft Not Found", { status: 404 });
   }
-  console.log("found creator: ", data);
-  return data as [Creator];
+  console.log("found aircraft: ", data);
+  return data as [AirCraft];
 };
 
 
-export const create = async (creator: Creator) => {
-  const { error } = await supabase.from(CREATOR_TABLE).insert({
-    ...creator,
+export const create = async (aircraft: AirCraft) => {
+  const { error } = await supabase.from(AIRCRAFT_TABLE).insert({
+    ...aircraft,
   });
   if (error) {
     console.error(error);
@@ -47,10 +48,10 @@ export const create = async (creator: Creator) => {
 };
 
 
-export const update = async (creator: Creator) => {
-  const { data, error } = await supabase.from(CREATOR_TABLE).update({
-    ...creator,
-  }).eq("id", creator.id);
+export const update = async (aircraft: AirCraft) => {
+  const { data, error } = await supabase.from(AIRCRAFT_TABLE).update({
+    ...aircraft,
+  }).eq("id", aircraft.id);
   
   console.log("Update: ", data);
   if (error) {
@@ -68,8 +69,8 @@ export const update = async (creator: Creator) => {
 };
 
 
-export const deleteCreator = async (id: number) => {
-  const { data, error } = await supabase.from(CREATOR_TABLE).delete().eq("id", id);
+export const deleteAircraft = async (id: number) => {
+  const { data, error } = await supabase.from(AIRCRAFT_TABLE).delete().eq("id", id);
   
   console.log("Update: ", data);
   if (error) {
