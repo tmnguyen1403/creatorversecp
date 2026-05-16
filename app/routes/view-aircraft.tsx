@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 import type { AirCraft } from "../models/AirCraft";
-import { getById as getAirCraft, deleteAircraft } from "../api/aircraft";
+import { getById as getAirCraft, deleteAirCraft } from "../api/aircraft";
 import { redirect, type ActionFunctionArgs } from "react-router";
 
 // 1. The Loader handles the backend/server-side data fetching
@@ -32,8 +32,7 @@ export async function action({ params }: ActionFunctionArgs) {
 
   // Execute the delete operation directly inside your Supabase client schema configuration
   console.log("Removing aircraft: ", id);
-  //const { success, error } = await deleteAirCraft(Number(id));
-  const error = "";
+  const { success, error } = await deleteAirCraft(Number(id));
   if (error) {
     console.log("Failed to remove");
     return { ok: false, error: "Failed to remove aircraft from database" };

@@ -69,7 +69,7 @@ export const update = async (aircraft: AirCraft) => {
 };
 
 
-export const deleteAircraft = async (id: number) => {
+export const deleteAirCraft = async (id: number) => {
   const { data, error } = await supabase.from(AIRCRAFT_TABLE).delete().eq("id", id);
   
   console.log("Update: ", data);

@@ -34,7 +34,7 @@ export default function Home() {
       toast.success("AirCraft removed successfully");
       setSearchParams({}, {replace: true});
     }
-  }, [searchParams, setSearchParams]);
+  }, [searchParams]);
 
   return <Welcome aircrafts={aircrafts}/>;
 }
