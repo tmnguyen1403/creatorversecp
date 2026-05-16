@@ -1,7 +1,12 @@
-import { useLoaderData, Link, Form } from "react-router";
+import { useLoaderData, useActionData, Link, Form } from "react-router";
+import type { Route } from "./+types/create-details";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+
 import type { Creator } from "../models/Creator";
-import type { Route } from "./+types/create-creator";
-import { getCreator } from "~/api/get-creator";
+import { getById as getCreator } from "~/api/creator";
+import { redirect, type ActionFunctionArgs } from "react-router";
+import { deleteCreator } from "~/api/creator";
 
 // 1. The Loader handles the backend/server-side data fetching
 export async function loader({ params }: Route.LoaderArgs) {
@@ -18,6 +23,28 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { creator };
 }
 
+
+export async function action({ params }: ActionFunctionArgs) {
+  const { id } = params;
+
+  if (!id) {
+    throw new Response("Missing Creator Identifier ID", { status: 400 });
+  }
+
+  // Execute the delete operation directly inside your Supabase client schema configuration
+  console.log("Removing creator: ", id);
+  //const { success, error } = await deleteCreator(Number(id));
+  const error = "";
+  if (error) {
+    console.log("Failed to remove");
+    return { ok: false, error: "Failed to remove creator from database" };
+  }
+  console.log("Success to remove");
+  // Redirect the user back to the homepage list on clean completion
+  return redirect("/?deleted=success");
+}
+
+
 // 2. The Component handles the frontend UI layout styled with Pico CSS
 export default function CreatorDetail() {
   const data = useLoaderData<typeof loader>();
@@ -25,6 +52,14 @@ export default function CreatorDetail() {
 
   // Safe fallback if your Int8Array ID string mapping requires extraction
   const creatorId = creator.id ? String(creator.id) : "";
+
+  const actionData = useActionData<typeof action>();
+
+  useEffect(() => {
+    if (actionData?.error) {
+      toast.error("Failed to delete creator");
+    }
+  }, [actionData]);
 
   return (
     <main className="container">
@@ -100,7 +135,6 @@ export default function CreatorDetail() {
             {/* 2. Delete Form Container */}
             <Form
               method="post"
-              action={`/creators/${creatorId}/delete`}
               style={{ marginBottom: "0" }}
               onSubmit={(e) => {
                 if (!confirm("Are you sure you want to delete this creator?")) {

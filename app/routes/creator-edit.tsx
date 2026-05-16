@@ -1,8 +1,7 @@
 import { redirect } from "react-router";
-import type { Route } from "./+types/create-creator";
+import type { Route } from "./+types/create-edit";
 
 import CreatorForm from "../components/creators/CreatorForm";
-import { createCar } from "../api/create-creator";
 import type { Creator } from "../models/Creator";
 import { useActionData } from "react-router";
 import toast from "react-hot-toast";

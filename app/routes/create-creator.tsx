@@ -1,12 +1,11 @@
-import { redirect } from "react-router";
+import { useActionData } from "react-router";
 import type { Route } from "./+types/create-creator";
+import { useEffect} from 'react';
+import toast from "react-hot-toast";
 
 import CreatorForm from "../components/creators/CreatorForm";
-import { createCar } from "../api/create-creator";
+import { create as createCreator } from "../api/creator";
 import type { Creator } from "../models/Creator";
-import { useActionData } from "react-router";
-import toast from "react-hot-toast";
-import { useEffect} from 'react';
 
 export async function action({
   request,
@@ -21,7 +20,7 @@ export async function action({
   };
 
   console.log("Creator:", data);
-  const result = await createCar(data)
+  const result = await createCreator(data)
   if (!result.success) {
     return { ok: false, error: result.error };
   }

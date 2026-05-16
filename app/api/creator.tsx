@@ -66,3 +66,22 @@ export const update = async (creator: Creator) => {
     }
   }
 };
+
+
+export const deleteCreator = async (id: number) => {
+  const { data, error } = await supabase.from(CREATOR_TABLE).delete().eq("id", id);
+  
+  console.log("Update: ", data);
+  if (error) {
+    console.error(error);
+    return {
+      success: false,
+      error: error.message
+    }
+  } else {
+    console.log("Success submit to supabase");
+    return {
+      success: true
+    }
+  }
+};

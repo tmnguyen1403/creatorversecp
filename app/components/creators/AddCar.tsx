@@ -1,5 +1,5 @@
 import type { Creator } from "../../models/Creator";
-import { createCar } from "../../api/create-creator";
+import { create as createCreator } from "../../api/creator";
 
 
 type CreateCarButtonProps = {
@@ -17,7 +17,7 @@ export default function CreateCarButton({data}: CreateCarButtonProps) {
   };
   return (
     <button
-      onClick={() =>createCar(sample)}
+      onClick={() =>createCreator(sample)}
       className="px-4 py-2 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition"
     >
       Create Car
