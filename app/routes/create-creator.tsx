@@ -42,8 +42,6 @@ export default function CreateCreatorPage() {
 
   return (
   <>
-    {/* {actionData?.ok && (toast.success("Creator added successfully!"))}
-    {actionData?.error && (toast.error("Failed to add creator"))} */}
     <CreatorForm />;
   </>
   );

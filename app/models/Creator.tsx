@@ -1,5 +1,5 @@
 export type Creator = {
-  id?: Int8Array;
+  id?: number;
   name: string;
   url: string;
   description: string;

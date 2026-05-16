@@ -1,12 +1,6 @@
 import { Form } from "react-router";
+import type {Creator} from "../../models/Creator";
 
-export type Creator = {
-  id?: number;
-  name: string;
-  url: string;
-  description: string;
-  imageURL: string;
-};
 
 export default function CreatorForm() {
 
